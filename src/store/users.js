@@ -11,6 +11,17 @@ const slice = createSlice({
         username: action.payload.name,
       });
     },
+    usersRequested: (users, action) => {
+      users.loading = true;
+    },
+    usersReceived: (users, action) => {
+      users.list = action.payload;
+      users.loading = false;
+      users.lastFetch = Date.now();
+    },
+    usersRequestFailed: (users, action) => {
+      users.loading = false;
+    },
   },
 });
 
