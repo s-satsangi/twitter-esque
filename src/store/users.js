@@ -17,3 +17,19 @@ const slice = createSlice({
 export const { userAdded } = slice.actions;
 
 export default slice.reducer;
+
+const url = "/users";
+export const loadUsers = () => (dispatch, getState) => {
+  const { lastFetch } = getState().entities.users;
+
+  const diffInMinutes = moment().diff(moment(lastFetch), "minutes");
+  if (diffInMinutes < 10) return;
+  return dispatch(
+    apiCallBegan({
+      url,
+      onStart: usersRequested.type,
+      onSuccess: usersReceived.type,
+      onError: usersRequestFailed.type,
+    })
+  );
+};
